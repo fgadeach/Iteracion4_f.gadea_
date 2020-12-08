@@ -1,0 +1,18 @@
+{
+	"title": "Nombres de las tablas de Parranderos Uniandes para la aplicación A",
+	"unidadPersistencia": "Parranderos",
+	"tablas":
+	[
+		"AforoCC_sequence",
+		"A_CARNET",
+		"A_CENTROCOMERCIAL",
+		"A_ESPACIO",
+		"A_HORARIO",
+		"A_LECTOR",
+		"A_LECTORCC",
+		"A_LECTORESPACIO",
+		"A_VISITA",
+		"A_VISITANTE",
+		"A_ESTABLECIMIENTO"
+	]
+}

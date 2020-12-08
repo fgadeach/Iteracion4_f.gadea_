@@ -1,0 +1,18 @@
+{
+	"title": "Nombres de las tablas de Parranderos Uniandes para pruebas de la aplicación cuando la base de datos no existe o está caida",
+	"unidadPersistencia": "AforoCCErrorDS",
+	"tablas":
+	[
+		"AforoCC_sequence",
+		"X_CARNET",
+		"X_CENTROCOMERCIAL",
+		"X_ESPACIO",
+		"X_HORARIO",
+		"X_LECTOR",
+		"X_LECTORCC",
+		"X_LECTORESPACIO",
+		"X_VISITA",
+		"X_VISITANTE",
+		"X_ESTABLECIMIENTO"
+	]
+}

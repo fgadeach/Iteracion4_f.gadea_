@@ -1,0 +1,129 @@
+{
+	"title": "Demostración de AforoCC Uniandes",
+	"frameH": 600,
+	"frameW": 800,
+	"bannerPath": "./src/main/resources/config/logo.png",
+	"menuBar":
+	[
+		{ "menuTitle": "CentroComercial",
+		  "options":
+			[
+				{
+					"label": "CRD de CentroComercial",
+					"event": "demoCentroComercial"
+				}
+			]
+		},		
+		{ "menuTitle": "Espacio",
+		  "options":
+			[
+				{
+					"label": "CRD de Espacio",
+					"event": "demoEspacio"
+				}
+			]
+		},
+		{ "menuTitle": "Horario",
+		  "options":
+			[
+				{
+					"label": "CRD de Horario",
+					"event": "demoHorario"
+				}
+			]
+		},
+		{ "menuTitle": "Lector",
+		  "options":
+			[
+				{
+					"label": "CRD de Lector",
+					"event": "demoLector"
+				}
+			]
+		},
+		{ "menuTitle": "LectorCC",
+		  "options":
+			[
+				{
+					"label": "CRD de LectorCC",
+					"event": "demoLectorCC"
+				}
+			]
+		},
+		{ "menuTitle": "LectorEspacio",
+		  "options":
+			[
+				{
+					"label": "CRD de LectorEspacio",
+					"event": "demoLectorEspacio"
+				}
+			]
+		},
+		{ "menuTitle": "Visitante",
+		  "options":
+			[
+				{
+					"label": "CRD de Visitante",
+					"event": "demoVisitante"
+				}			
+			]
+		},
+		{ "menuTitle": "Visita",
+		  "options":
+			[
+				{
+					"label": "CRD de Visita",
+					"event": "demoVisita"
+				}
+			]
+		},	
+		{ "menuTitle": "Caernet",
+			"options":
+			  [
+				{
+					"label": "CRD de Caernet",
+					"event": "demoCarnet"
+				}
+			  ]
+		  },		
+		{ "menuTitle": "Documentación",
+		  "options":
+			[
+				{
+					"label": "Presentación general",
+					"event": "mostrarPresentacionGeneral"
+				},
+				{
+					"label": "Modelo conceptual",
+					"event": "mostrarModeloConceptual"
+				},
+				{
+					"label": "Esquema de la BD",
+					"event": "mostrarEsquemaBD"
+				},
+				{
+					"label": "Script creación de la BD",
+					"event": "mostrarScriptBD"
+				},
+				{
+					"label": "Arquitectura de referencia",
+					"event": "mostrarArqRef"
+				},
+				{
+					"label": "Javadoc Parranderos",
+					"event": "mostrarJavadoc"
+				}
+			]
+		},		
+		{ "menuTitle": "Acerca de ...",
+		  "options":
+			[
+				{
+					"label": "Acerca de ...",
+					"event": "acercaDe"
+				}
+			]
+		}		
+	]
+}
+	
