@@ -1,8 +1,12 @@
 package uniandes.isis2304.parranderos.persistencia;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Date;
 
 import java.util.List;
+import java.util.Scanner;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -50,11 +54,9 @@ public class SQLVisitante {
 		return (Visitante) q.executeUnique();
 	}
 
-
-
 	public List<Visitante> darVisitasRealizadas (PersistenceManager pm, long idVisitante)
 	{
-		String sql = "SELECT lec.id, lece.id, lece.idEspacio, est.id, vis.id_lector";
+		String sql = "SELECT lec.id, lece.id, lece.idEstablecimiento, est.id, vis.id_lector";
 		sql += " FROM ";
 		sql += pp.darSeqVisitante() + " visi, ";
 		sql += pp.darSeqEstablecimiento() + " est, ";
@@ -66,7 +68,7 @@ public class SQLVisitante {
 		sql += " AND visi.id = vis.id_visitante";
 		sql += " AND vis.id_lector = lec.id";
 		sql += " AND lec.id = lece.id";
-		sql += " AND lece.idEspacio = est.id";
+		sql += " AND lece.idEstablecimiento = est.id";
 
 		Query q = pm.newQuery(SQL, sql);
 		q.setParameters(idVisitante);
@@ -103,13 +105,13 @@ public class SQLVisitante {
 	public List<Visitante> RFC10(PersistenceManager pm, Long id_local, String fechaInicio, String fechaFin, String ordenar)
 	{ 
 		String sql = "SELECT *";
-		sql +=" FROM " +pp.darVisitantes();
+		sql +=" FROM " +pp.darSeqVisitante();
 		sql+=" WHERE ";
 		sql+="id IN";
 		sql+="(SELECT id_visitante FROM" + pp.darSeqVisita()+ "WHERE FechaHoraEntrada BETWEEN\n" + fechaInicio +"AND" + fechaFin;
 		sql+="AND id_lector IN";
 		sql+="(SELECT id FROM"+pp.darLectoresEspacio();
-		sql+="WHERE idEspacio="+id_local+"));";
+		sql+="WHERE idEstablecimiento="+id_local+"));";
 
 		if(ordenar !="" && ordenar !=null) 
 		{
@@ -123,13 +125,13 @@ public class SQLVisitante {
 	public List<Visitante> RFC11(PersistenceManager pm, Long id_local, String fechaInicio, String fechaFin, String ordenar)
 	{ 
 		String sql = "SELECT *";
-		sql +=" FROM " +pp.darVisitantes();
+		sql +=" FROM " +pp.darSeqVisitante();
 		sql+=" WHERE ";
 		sql+="id IN";
 		sql+="(SELECT id_visitante FROM" + pp.darSeqVisita()+ "WHERE FechaHoraEntrada BETWEEN\n" + fechaInicio +"AND" + fechaFin;
 		sql+="AND id_lector NOT IN";
 		sql+="(SELECT id FROM"+pp.darLectoresEspacio();
-		sql+="WHERE idEspacio="+id_local+"));";
+		sql+="WHERE idEstablecimiento="+id_local+"));";
 
 		if(ordenar !="" && ordenar !=null) 
 		{
@@ -140,15 +142,65 @@ public class SQLVisitante {
 	}
 
 
-	public List<Visitante> buenosVisitantes()
+	public List<Visitante> buenosVisitantes(PersistenceManager pm)
 	{
-		String sql = "SELECT nombre, ";
-		sql+="COUNT(*) OVER(Select  From" + pp.darSeqVisita();
-		sql+="where FechaHoraEntrada = 7/NOV/2020)";
-		sql+="FROM" + pp.darSeqVisitante();
-		
-		return null;
-	}
+		String sql = "(SELECT A_VISITANTE.ID as id, A_VISITANTE.NOMBRE as nombre, A_VISITANTE.TELEFONO as telefono, "
+				+ "A_VISITANTE.NOMCONTACTO as contacto, A_VISITANTE.NUMCONTACTO as contactoTelefono, A_VISITANTE.CORREO as correo";
+		sql+="FROM(SELECT c, COUNT(DISTINCT mes)";
+		sql+="ROM(SELECT EXTRACT(MONTH FROM CAST(FECHAENTRADA as DATE)) as mes,ID_VISITANTE as c";
+		sql+="FROM " + pp.darSeqVisita();
+		sql+="GROUP BY EXTRACT(MONTH FROM CAST(FECHAENTRADA as DATE)),ID_VISITANTE)";
+		sql+="GROUP BY c";
+		sql+="HAVING COUNT (DISTINCT mes)='12')";
+		sql+="INNER JOIN A_VISITANTE ON A_VISITANTE.ID=VISITA.id_visitante) UNION";
+		sql+="SELECT A_VISITANTE.ID as id, A_VISITANTE.NOMBRE as nombre, A_VISITANTE.TELEFONO as telefono,"
+				+ " A_VISITANTE.NOMCONTACTO as contacto, A_VISITANTE.NUMCONTACTO as contactoTelefono, A_VISITANTE.CORREO as correo";
+		sql+="FROM (SELECT dia, c, COUNT (DISTINCT Establecimiento) as espaciosVisitados";
+		sql+="FROM(SELECT EXTRACT(DAY FROM CAST(FECHAENTRADA as DATE)) as dia, ID_VISITANTE as c, IDESTABLECIMIENTO as Establecimiento, TIPO ";
+		sql+="FROM " +  pp.darSeqVisita();
+		sql+="GROUP BY FECHAENTRADA, ID_VISITANTE, IDESTABLECIMIENTO, TIPO, EXTRACT(DAY FROM CAST(FECHAENTRADA as DATE))";
+		sql+="HAVING EXTRACT(MONTH FROM CAST(FECHAENTRADA as DATE))='12' AND EXTRACT(YEAR FROM CAST(FECHAENTRADA as DATE))='2020' AND TIPO='Entrada')";
+		sql+="GROUP BY dia, c";
+		sql+="HAVING COUNT (DISTINCT Establecimiento)>=4)";
+		sql+="INNER JOIN A_VISITANTE ON A_VISITANTE.ID=VISITA.id_visitante) UNION(";
+		sql+="SELECT A_VISITANTE.ID as id, A_VISITANTE.NOMBRE as nombre, A_VISITANTE.TELEFONO as telefono, "
+				+ "A_VISITANTE.NOMCONTACTO as contacto, A_VISITANTE.NUMCONTACTO as contactoTelefono, A_VISITANTE.CORREO as correo";
+		sql+="FROM(SELECT c, COUNT (DISTINCT tipo) tipoEstablecimiento";
+		sql+="FROM(SELECT dia, c, Establecimiento, TIPO as tipo";
+		sql+="FROM(SELECT EXTRACT(DAY FROM CAST(FECHAENTRADA as DATE)) as dia, ID_VISITANTE as c, IDESTABLECIMIENTO as Establecimiento, TIPO";
+		sql+="FROM " +  pp.darSeqVisita();
+		sql+="GROUP BY FECHAENTRADA, ID_VISITANTE, IDESTABLECIMIENTO, EXTRACT(DAY FROM CAST(FECHAENTRADA as DATE))";
+		sql+="HAVING EXTRACT(MONTH FROM CAST(FECHAENTRADA as DATE))='12' AND EXTRACT(YEAR FROM CAST(FECHAENTRADA as DATE))='2020')";
+		sql+="INNER JOIN ESTABLECIMIENTO ON establecimiento.idespacio=Establecimiento)";
+		sql+="GROUP BY c";
+		sql+="HAVING COUNT (DISTINCT tipo)>=2)";
+		sql+="INNER JOIN A_VISITANTE ON A_VISITANTE.ID=VISITA.ID_visitante);";
 
+		Query q = pm.newQuery(SQL, sql);
+		return (List<Visitante>) q.executeList();
+	}
+	
+	public void LoadData(PersistenceManager pm) 
+	{
+		String sql = "";
+		File fr = new File("Iteracion4_f.gadea_/data/datos.txt");
+		try {
+			Scanner myReader = new Scanner(fr);
+			while(myReader.hasNextLine()) 
+			{
+				sql += myReader.nextLine();
+				if(myReader.nextLine()==";") 
+				{
+					Query q = pm.newQuery(SQL, sql);
+					q.executeList();
+					sql="";
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

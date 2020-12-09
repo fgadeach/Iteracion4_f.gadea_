@@ -744,7 +744,6 @@ public class InterfazParranderosApp extends JFrame implements ActionListener{
 	{
 		try
 		{
-
 			UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName( ) );
 			InterfazParranderosApp interfaz = new InterfazParranderosApp( );
 			interfaz.setVisible( true );

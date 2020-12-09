@@ -473,7 +473,29 @@ public class AforoCC {
         return resp;
 	}
 	
+	public List<Visitante> rf10(long id_local, String fechaInicio, String fechaFin, String ordenar)
+	{
+		log.info ("Consultando visitantes");
+        List<Visitante> var = pp.darRF10(id_local, fechaInicio, fechaFin, ordenar);	
+        log.info ("Consultando Visitantes: " + var.size() + " existentes");
+        return var;
+	}
 	
+	public List<Visitante> rf11(long id_local, String fechaInicio, String fechaFin, String ordenar)
+	{
+		log.info ("Consultando visitantes");
+        List<Visitante> var = pp.darRF11(id_local, fechaInicio, fechaFin, ordenar);	
+        log.info ("Consultando Visitantes: " + var.size() + " existentes");
+        return var;
+	}
+	
+	public List<Visitante> darBuenosVisitantes()
+	{
+		log.info ("Consultando visitantes");
+        List<Visitante> var = pp.darBuenosVisitantes();	
+        log.info ("Consultando Visitantes: " + var.size() + " existentes");
+        return var;
+	}
 	
 	
 	/* ****************************************************************

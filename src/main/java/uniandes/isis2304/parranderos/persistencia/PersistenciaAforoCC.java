@@ -411,7 +411,7 @@ public class PersistenciaAforoCC {
 			pm.close();
 		}
 	}
-	
+
 	public long eliminarEspacioPorId (long id) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -443,90 +443,90 @@ public class PersistenciaAforoCC {
 	{
 		return sqlespacio.darEspacios(pmf.getPersistenceManager());
 	}
-	
+
 	public long cambiarEstadoEspacio(long id, String estado)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlespacio.cambiarEstadoEspacio(pm, id, estado);
-            tx.commit();
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-            return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlespacio.cambiarEstadoEspacio(pm, id, estado);
+			tx.commit();
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
-	
+
+
 	public long cambiarEstadoNarajnaEspacio(long id)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlespacio.deshabilitarEspacio(pm, id);
-            tx.commit();
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-            return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlespacio.deshabilitarEspacio(pm, id);
+			tx.commit();
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
-	
+
+
 	public long rehabilitarEspacio(long id)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlespacio.rehabilitarEspacio(pm, id);
-            tx.commit();
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-            return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlespacio.rehabilitarEspacio(pm, id);
+			tx.commit();
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
-	
+
 
 	/* ****************************************************************
 	 * 			Métodos para manejar los Horarios
@@ -879,7 +879,7 @@ public class PersistenciaAforoCC {
 	{
 		return sqlvisitante.darVisitasRealizadas(pmf.getPersistenceManager(), id);
 	}
-	
+
 	public long eliminarVisitantePorId (long id) 
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -938,38 +938,50 @@ public class PersistenciaAforoCC {
 		}
 
 	}
-	
-	
+
+
 	public long cambiarEstadoSalud (long id, String estado)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx=pm.currentTransaction();
-        try
-        {
-            tx.begin();
-            long resp = sqlvisitante.cambiarEstadoVisitante(pm, id, estado);
-            tx.commit();
-            return resp;
-        }
-        catch (Exception e)
-        {
-//        	e.printStackTrace();
-        	log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
-            return -1;
-        }
-        finally
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            pm.close();
-        }
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();
+			long resp = sqlvisitante.cambiarEstadoVisitante(pm, id, estado);
+			tx.commit();
+			return resp;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return -1;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
+	public List<Visitante> darBuenosVisitantes()
+	{
+		return sqlvisitante.buenosVisitantes(pmf.getPersistenceManager());
+	}
+
+	public List<Visitante> darRF10(long id_local,String fechaInicio, String fechaFin, String ordenar)
+	{
+		return sqlvisitante.RFC10(pmf.getPersistenceManager(), id_local, fechaInicio, fechaFin, ordenar);
+	}
+
+	public List<Visitante> darRF11(long id_local,String fechaInicio, String fechaFin, String ordenar)
+	{
+		return sqlvisitante.RFC11(pmf.getPersistenceManager(), id_local, fechaInicio, fechaFin, ordenar);
 	}
 	
-
-
-
 	/* ****************************************************************
 	 * 			Métodos para manejar los ESTABLECIMIENTOS
 	 *****************************************************************/
@@ -1035,14 +1047,15 @@ public class PersistenciaAforoCC {
 	{
 		return sqlestablecimiento.darEstablecimientos(pmf.getPersistenceManager());
 	}
-	
+
+
 	public List<Establecimiento> darEstablecimientosConaforo()
 	{
 		return sqlestablecimiento.establecimientoConAforoDisponible(pmf.getPersistenceManager());
 	}
-	
-	
-	
+
+
+
 }
 
 
