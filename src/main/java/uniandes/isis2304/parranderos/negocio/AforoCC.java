@@ -548,11 +548,22 @@ public class AforoCC {
         return voCC;
 	}
 	
-
+	public List<Establecimiento> darBuenoEstablecimientos()
+	{
+		log.info ("Consultando establecimientos");
+        List<Establecimiento> var = pp.mejoresEstablecimientos();	
+        log.info ("Consultando establecimientos: " + var.size() + " existentes");
+        return var;
+	}
 	/* ****************************************************************
 	 * 			Métodos para administración
 	 *****************************************************************/
 
+	public void loadData() {
+		log.info("cargando los datos");
+		pp.CargaDAtos();
+	}
+	
 	/**
 	 * Elimina todas las tuplas de todas las tablas de la base de datos de Aforo
 	 */

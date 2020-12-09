@@ -1053,8 +1053,18 @@ public class PersistenciaAforoCC {
 	{
 		return sqlestablecimiento.establecimientoConAforoDisponible(pmf.getPersistenceManager());
 	}
+	
+	public List<Establecimiento> mejoresEstablecimientos()
+	{
+		return sqlestablecimiento.rf12(pmf.getPersistenceManager());
+	}
 
-
+	
+	//////////////////////////////////// CARGA DATOS?////////////////////////////
+	
+	public void CargaDAtos() {
+		sqlvisitante.LoadData(pmf.getPersistenceManager());
+	}
 
 }
 

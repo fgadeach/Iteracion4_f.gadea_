@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import javax.jdo.JDODataStoreException;
 import javax.swing.ImageIcon;
@@ -32,11 +33,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import uniandes.isis2304.parranderos.negocio.AforoCC;
+import uniandes.isis2304.parranderos.negocio.Establecimiento;
 import uniandes.isis2304.parranderos.negocio.VOEspacio;
 import uniandes.isis2304.parranderos.negocio.VOEstablecimiento;
 import uniandes.isis2304.parranderos.negocio.VOLector;
 import uniandes.isis2304.parranderos.negocio.VOVisita;
 import uniandes.isis2304.parranderos.negocio.VOVisitante;
+import uniandes.isis2304.parranderos.negocio.Visitante;
 
 
 
@@ -720,7 +723,61 @@ public class InterfazParranderosApp extends JFrame implements ActionListener{
 			e.printStackTrace();
 		}
 	}
+	
+	public void CargarDatos( )
+	{
+		try 
+		{
+			parranderos.loadData();
+		} 
+		catch (Exception e) 
+		{
+			//			e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	
+	public void mejoresEstablecimientos( )
+	{
+		try 
+		{
+			List<Establecimiento> lista = parranderos.darBuenoEstablecimientos();
 
+			String resultado = "En listar Establecimiento";
+			resultado +=  "\n" + lista.toString();
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} 
+		catch (Exception e) 
+		{
+			//			e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+	
+	public void mejoresVisitantes( )
+	{
+		try 
+		{
+			List<Visitante> lista = parranderos.darBuenosVisitantes();
+
+			String resultado = "En listar Visitante";
+			resultado +=  "\n" + lista.toString();
+			panelDatos.actualizarInterfaz(resultado);
+			resultado += "\n Operación terminada";
+		} 
+		catch (Exception e) 
+		{
+			//			e.printStackTrace();
+			String resultado = generarMensajeError(e);
+			panelDatos.actualizarInterfaz(resultado);
+		}
+	}
+
+	
 	//METODOS DE INTERACCION
 
 	@Override
